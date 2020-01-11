@@ -1,0 +1,29 @@
+entity Category {
+	name String
+}
+
+entity SubCategory {
+	name String
+}
+
+
+relationship OneToMany {
+	Category{category} to SubCategory{subCategory}
+}
+
+relationship OneToOne {
+	SubCategory{subCategory} to Category{category}
+}
+
+// Set pagination options
+paginate Category, SubCategory with infinite-scroll
+paginate Category, SubCategory with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Category, SubCategory
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
