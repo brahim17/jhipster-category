@@ -1,9 +1,11 @@
 entity Category {
 	name String
+    description String
 }
 
 entity SubCategory {
 	name String
+    description String
 }
 
 
