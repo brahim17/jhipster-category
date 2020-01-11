@@ -36,6 +36,9 @@ public class CategoryResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -78,7 +81,8 @@ public class CategoryResourceIT {
      */
     public static Category createEntity(EntityManager em) {
         Category category = new Category()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION);
         return category;
     }
     /**
@@ -89,7 +93,8 @@ public class CategoryResourceIT {
      */
     public static Category createUpdatedEntity(EntityManager em) {
         Category category = new Category()
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION);
         return category;
     }
 
@@ -114,6 +119,7 @@ public class CategoryResourceIT {
         assertThat(categoryList).hasSize(databaseSizeBeforeCreate + 1);
         Category testCategory = categoryList.get(categoryList.size() - 1);
         assertThat(testCategory.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testCategory.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -147,7 +153,8 @@ public class CategoryResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(category.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
     
     @Test
@@ -161,7 +168,8 @@ public class CategoryResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(category.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
     @Test
@@ -185,7 +193,8 @@ public class CategoryResourceIT {
         // Disconnect from session so that the updates on updatedCategory are not directly saved in db
         em.detach(updatedCategory);
         updatedCategory
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION);
 
         restCategoryMockMvc.perform(put("/api/categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -197,6 +206,7 @@ public class CategoryResourceIT {
         assertThat(categoryList).hasSize(databaseSizeBeforeUpdate);
         Category testCategory = categoryList.get(categoryList.size() - 1);
         assertThat(testCategory.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testCategory.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test

@@ -36,6 +36,9 @@ public class SubCategoryResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     @Autowired
     private SubCategoryRepository subCategoryRepository;
 
@@ -78,7 +81,8 @@ public class SubCategoryResourceIT {
      */
     public static SubCategory createEntity(EntityManager em) {
         SubCategory subCategory = new SubCategory()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION);
         return subCategory;
     }
     /**
@@ -89,7 +93,8 @@ public class SubCategoryResourceIT {
      */
     public static SubCategory createUpdatedEntity(EntityManager em) {
         SubCategory subCategory = new SubCategory()
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION);
         return subCategory;
     }
 
@@ -114,6 +119,7 @@ public class SubCategoryResourceIT {
         assertThat(subCategoryList).hasSize(databaseSizeBeforeCreate + 1);
         SubCategory testSubCategory = subCategoryList.get(subCategoryList.size() - 1);
         assertThat(testSubCategory.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testSubCategory.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -147,7 +153,8 @@ public class SubCategoryResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subCategory.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
     
     @Test
@@ -161,7 +168,8 @@ public class SubCategoryResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(subCategory.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
     @Test
@@ -185,7 +193,8 @@ public class SubCategoryResourceIT {
         // Disconnect from session so that the updates on updatedSubCategory are not directly saved in db
         em.detach(updatedSubCategory);
         updatedSubCategory
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION);
 
         restSubCategoryMockMvc.perform(put("/api/sub-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -197,6 +206,7 @@ public class SubCategoryResourceIT {
         assertThat(subCategoryList).hasSize(databaseSizeBeforeUpdate);
         SubCategory testSubCategory = subCategoryList.get(subCategoryList.size() - 1);
         assertThat(testSubCategory.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testSubCategory.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test
