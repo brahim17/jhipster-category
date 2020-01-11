@@ -1,0 +1,37 @@
+{
+    "name": "SubCategory",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "category",
+            "otherEntityRelationshipName": "category",
+            "relationshipName": "subCategory",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "category",
+            "otherEntityRelationshipName": "category",
+            "relationshipName": "subCategory",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200111210243",
+    "entityTableName": "sub_category",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "category",
+    "applications": "*",
+    "microserviceName": "category"
+}
